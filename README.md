@@ -32,14 +32,13 @@ And dependency:
 ## Usage
 
 ```java
-// For all examples we assume a codebase with the following objects:
+// Assuming a codebase with the following objects:
 //    Object
 //      |
 //    Vehicle
 //    |     |
 //   Car  Motorcycle
-
-
+//   
 // Get a list of all classes in a hierarchy given a class.
 // will return [Car.class, Vehicle.class, Object.class] as a list
 List classes = Reflection.hierarchy(Car.class)
@@ -53,10 +52,10 @@ Car newCar = Reflection.createInstance(Car.class)
 Car newCar = Reflection.createInstance("net.glxn.Car")
 
 // Get all fields in a given class
-List<Field> fields = Reflection.fields(Car.class)}
+List<Field> fields = Reflection.fields(Car.class)
 
 // Get all fields in a given class including all inherited fields from superclasses
-List<Field> fields = Reflection.fields(Car.class, true)}
+List<Field> fields = Reflection.fields(Car.class, true)
 List<Fields> fields = Reflection.fields(Reflection.hierarchy(Car.class)) // semantically the same
 
 // Get all fields in a class hierarchy with a given annotation
