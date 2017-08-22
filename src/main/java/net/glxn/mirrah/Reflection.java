@@ -15,7 +15,7 @@ import static java.lang.String.format;
 import static java.util.Arrays.asList;
 
 /**
- * ReflectionUtil
+ * Reflection
  *
  * Class contains utility reflection methods.
  * See: {@link Reflection#hierarchy(Class)} and {@link Reflection#createInstance(Class)}
@@ -34,7 +34,7 @@ public class Reflection {
      *   Car  Motorcycle
      * </pre>
      *
-     * Calling {@code ClassHierarchyUtil.hierarchy(Car.class)} will return [Car.class, Vehicle.class, Object.class] as a list
+     * Calling {@code Reflection.hierarchy(Car.class)} will return [Car.class, Vehicle.class, Object.class] as a list
      *
      * @param clazz the class for which to get the class hierarchy list
      * @return a list of classes that are in the hierarchy of the argument class from, and including, itself up to, and including, Object
@@ -99,7 +99,7 @@ public class Reflection {
      * find all fields in the list of classes. Typically used in conjunction with {@link Reflection#hierarchy(Class)}.
      * To get all fields in a hierarchy
      * <pre>
-     *     ReflectionUtil.fields(ReflectionUtil.hierarchy(Foo.class))}
+     *     Reflection.fields(Reflection.hierarchy(Foo.class))}
      * </pre>
      *
      * @param classes list of classes to get fields for
@@ -150,10 +150,13 @@ public class Reflection {
         return fieldsWithAnnotation(annotation, hierarchy(clazz));
     }
 
-    /*
-    TODO: handle more than one annotation found.
-    TODO: even for class this is an issue. can have same annotation on several classes in the hierarchy.
-
+    /**
+     * Gets the given annotation defined in a class.
+     * @param  Class<T>    annotation    The annotation to get
+     * @param  Class       clazz         The class in which to look for the annotation
+     * @param  ElementType target        Whether the annotation @Target is FIELD or TYPE.
+     * @return             The annotation
+     */
     public static <T extends Annotation> T getAnnotation(Class<T> annotation, Class clazz, ElementType target) {
         switch (target) {
             case FIELD:
@@ -165,6 +168,12 @@ public class Reflection {
         }
     }
 
+    /**
+     * Gets the given class level annotation defined in a class.
+     * @param  Class<T> annotation    The annotation to get
+     * @param  Class    clazz         The class in which to look for the annotation
+     * @return          The annotation
+     */
     public static <T extends Annotation> T getAnnotationOnClass(Class<T> annotation, Class clazz) {
         List<Class<?>> hierarchy = hierarchy(clazz);
         for (Class<?> node : hierarchy) {
@@ -176,6 +185,12 @@ public class Reflection {
         return null;
     }
 
+    /**
+     * Gets the given field level annotation defined in a class.
+     * @param  Class<T> annotation    the annotation to get
+     * @param  Class    clazz         The class in which to look for the annotation
+     * @return          The annotation
+     */
     public static <T extends Annotation> T getAnnotationOnField(Class<T> annotation, Class clazz) {
         List<Field> fields = fields(clazz, true);
         for (Field field : fields) {
@@ -186,8 +201,6 @@ public class Reflection {
         }
         return null;
     }
-     */
-
 
 
     /**
