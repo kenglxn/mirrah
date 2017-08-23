@@ -3,6 +3,7 @@ package net.glxn.mirrah;
 import net.glxn.mirrah.exception.ReflectionException;
 
 import java.lang.annotation.Annotation;
+import java.lang.annotation.ElementType;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -152,10 +153,10 @@ public class Reflection {
 
     /**
      * Gets the given annotation defined in a class.
-     * @param  Class<T>    annotation    The annotation to get
-     * @param  Class       clazz         The class in which to look for the annotation
-     * @param  ElementType target        Whether the annotation @Target is FIELD or TYPE.
-     * @return             The annotation
+     * @param annotation The annotation to get
+     * @param clazz The class in which to look for the annotation
+     * @param target Whether the annotation @Target is FIELD or TYPE.
+     * @return The annotation
      */
     public static <T extends Annotation> T getAnnotation(Class<T> annotation, Class clazz, ElementType target) {
         switch (target) {
@@ -170,9 +171,9 @@ public class Reflection {
 
     /**
      * Gets the given class level annotation defined in a class.
-     * @param  Class<T> annotation    The annotation to get
-     * @param  Class    clazz         The class in which to look for the annotation
-     * @return          The annotation
+     * @param annotation The annotation to get
+     * @param clazz The class in which to look for the annotation
+     * @return The annotation
      */
     public static <T extends Annotation> T getAnnotationOnClass(Class<T> annotation, Class clazz) {
         List<Class<?>> hierarchy = hierarchy(clazz);
@@ -187,9 +188,9 @@ public class Reflection {
 
     /**
      * Gets the given field level annotation defined in a class.
-     * @param  Class<T> annotation    the annotation to get
-     * @param  Class    clazz         The class in which to look for the annotation
-     * @return          The annotation
+     * @param annotation the annotation to get
+     * @param clazz The class in which to look for the annotation
+     * @return The annotation
      */
     public static <T extends Annotation> T getAnnotationOnField(Class<T> annotation, Class clazz) {
         List<Field> fields = fields(clazz, true);
