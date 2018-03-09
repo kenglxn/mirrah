@@ -8,12 +8,11 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 import static java.lang.String.format;
 import static java.util.Arrays.asList;
+import static java.util.Collections.singletonList;
 
 /**
  * Reflection
@@ -21,7 +20,7 @@ import static java.util.Arrays.asList;
  * Class contains utility reflection methods.
  * See: {@link Reflection#hierarchy(Class)} and {@link Reflection#createInstance(Class)}
  */
-@SuppressWarnings("UnusedDeclaration")
+@SuppressWarnings({"UnusedDeclaration", "WeakerAccess"})
 public class Reflection {
 
     /**
@@ -121,7 +120,7 @@ public class Reflection {
      * @return all fields for the given class
      */
     public static List<Field> fields(Class<?> clazz, boolean includeInheritedFields) {
-        return fields(includeInheritedFields ? hierarchy(clazz) : Arrays.<Class<?>>asList(clazz));
+        return fields(includeInheritedFields ? hierarchy(clazz) : singletonList(clazz));
     }
 
     /**
@@ -130,7 +129,7 @@ public class Reflection {
      * @param classes the classes to search
      * @return list of all fields with the given annotation
      */
-    public static Collection<Field> fieldsWithAnnotation(Class<? extends Annotation> annotation, List<Class<?>> classes) {
+    public static List<Field> fieldsWithAnnotation(Class<? extends Annotation> annotation, List<Class<?>> classes) {
         ArrayList<Field> fields = new ArrayList<>();
         for (Field field : fields(classes)) {
             Annotation fieldAnnotation = field.getAnnotation(annotation);
@@ -147,7 +146,7 @@ public class Reflection {
      * @param clazz the class to search
      * @return list of all fields with the given annotation
      */
-    public static Collection<Field> fieldsWithAnnotation(Class<? extends Annotation> annotation, Class clazz) {
+    public static List<Field> fieldsWithAnnotation(Class<? extends Annotation> annotation, Class clazz) {
         return fieldsWithAnnotation(annotation, hierarchy(clazz));
     }
 
@@ -286,9 +285,19 @@ public class Reflection {
      * @param instance  the instance to get value from
      */
     public static Object getValueFromField(String fieldName, Object instance) {
+        if (fieldName.contains(".")) {
+            return getValueFromDelimitedField(fieldName, instance);
+        }
         return getValueFromField(getDeclaredField(instance.getClass(), fieldName), instance);
     }
 
+    private static Object getValueFromDelimitedField(String fieldName, Object instance) {
+        String firstField = fieldName.substring(0, fieldName.indexOf("."));
+        String rest = fieldName.substring(fieldName.indexOf(".") + 1, fieldName.length());
+
+        Object value = getValueFromField(firstField, instance);
+        return value == null ? null : getValueFromField(rest, value);
+    }
 
 
 }
