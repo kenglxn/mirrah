@@ -161,12 +161,8 @@ public class ReflectionTest {
         Car car = new Car();
         car.engine = new Engine();
 
-        assertEquals(
-            null,
-            Reflection.getValueFromField("engine.foo", car)
-        );
+        Reflection.getValueFromField("engine.foo", car);
     }
-
 
     private List<String> toFieldNames(List<Field> fields) {
         return fields.stream().map(Field::getName).collect(Collectors.toList());
