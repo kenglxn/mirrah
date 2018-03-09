@@ -86,6 +86,9 @@ Integer wheels = (Integer) Reflection.getValueFromField("wheels", car)
 // same as
 Reflection.getValueFromField(Reflection.getDeclaredField(Car.class, "wheels"), car)
 
+// Also supports deep fields
+Integer bore = (Integer) Reflection.getValueFromField("engine.cylinder.bore", car)
+
 // Set the value of a field on an object instance (also works for private fields)
 Reflection.setValueOnField("wheels", 4, car)
 // same as
